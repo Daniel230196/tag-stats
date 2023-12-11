@@ -1,0 +1,54 @@
+version: "2.2"
+
+services:
+    nginx:
+      container_name: mygento_nginx
+      build: ./images/nginx
+      volumes:
+        - ./images/nginx/sites-enabled:/etc/nginx/sites-enabled:cached
+        - ./app:/var/www/app
+        - ./app:/var/www/graph
+      ports:
+        - '8080:8080'
+      depends_on:
+        - app
+        - api
+        - mysql
+      networks:
+        default:
+          aliases:
+            - api
+            - app
+    mysql:
+      image: mysql:8.0
+      command: --default-authentication-plugin=mysql_native_password
+      restart: always
+      environment:
+        MYSQL_ROOT_PASSWORD: '123123'
+        MYSQL_DATABASE: 'mygento-test.loc'
+        MYSQL_USER: 'test'
+        MYSQL_PASSWORD: '123123'
+      ports:
+        - "3306:3306"
+      volumes:
+        - ./data/mysql:/var/lib/mysql/data:cached
+        - ./images/mysql/my.cnf:/etc/my.cnf:cached
+        - ./images/mysql/db.sql:/docker-entrypoint-initdb.d/db.sql
+    api:
+      container_name: graph
+      build: ./images/api
+      volumes:
+        - ./api:/app:delegated
+      ports:
+        - '3000:3000'
+      networks:
+        default:
+          aliases:
+            - app
+    app:
+      container_name: app
+      build: ./images/php
+      volumes:
+        - ./app:/app
+      depends_on:
+        - mysql

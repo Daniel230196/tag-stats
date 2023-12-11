@@ -1,0 +1,25 @@
+{
+  "name": "mygento-testing-graph",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "compile": "tsc",
+    "tet": "node_modules/.bin/ts-node src/index.ts",
+    "start": "node --version && npm run compile && node ./dist/index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/cors": "^2.8.17",
+    "apollo-server-express": "^3.13.0",
+    "axios": "^1.6.2",
+    "body-parser": "^1.20.2",
+    "class-validator": "^0.14.0",
+    "graphql": "^15.8.0",
+    "graphql-scalars": "^1.22.4",
+    "reflect-metadata": "^0.1.14",
+    "ts-node": "^10.9.1",
+    "type-graphql": "^1.1.1"
+  }
+}
